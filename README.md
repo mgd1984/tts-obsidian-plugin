@@ -1,6 +1,6 @@
 # Speech Synthesizer for Obsidian
 
-This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging the power of OpenAI's Whisper API to provide high-quality speech synthesis directly within your notes. Whether you're looking to enhance your productivity or make your notes more accessible, this plugin offers a seamless integration with Obsidian.
+This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging the power of OpenAI's TTS API to provide high-quality speech synthesis directly within your notes. Whether you're looking to enhance your productivity or make your notes more accessible, this plugin offers a seamless integration with Obsidian.
 
 ## Features
 
@@ -10,18 +10,18 @@ This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging 
 ## Getting Started
 
 1. **Install the Plugin**: Search for "Speech Synthesizer" in Obsidian's community plugins browser and install it.
-2. **Configure API Key**: Obtain an OpenAI API key [here](https://platform.openai.com/overview) and input it in the plugin's settings to activate the Whisper API's capabilities.
-3. **Customize Settings**: Adjust the plugin settings to fit your workflow, including the API URL, model, language, and saving preferences.
+2. **Configure API Key**: Obtain an OpenAI API key [here](https://platform.openai.com/overview) and input it in the plugin's settings to activate the plugin's capabilities.
+3. **Customize Settings**: Adjust the speech synthesizer settings to fit your workflow, including the API URL, model, language, and saving preferences.
 
 ## Settings
 
-- **API Key**: Your OpenAI API key. Required for accessing the Whisper API.
-- **API URL**: The endpoint for Whisper API requests. Default is set for optimal performance.
-- **Model**: Select the machine learning model for text transcription. Default is recommended for most users.
+- **API Key**: Your OpenAI API key. Required for accessing the OpenAI TTS API.
+- **API URL**: The endpoint for TTS API requests. Default is set for optimal performance.
+- **Model**: Selects the model for speech synthesis. Default model (tts-1) is recommended. tts-1-hd available for high-fidelity audio. **Updates coming soon**
 
 ## Contributing
 
-We welcome contributions to the Speech Synthesizer plugin! Whether it's through submitting bug reports, suggesting new features, or contributing to the code, your input is valuable. Check out the [GitHub repository](https://github.com/mgd1984/tts-obsidian-plugin) for more information on how to get involved.
+Contributions to the Speech Synthesizer plug-in are welcome. Whether it's through submitting bug reports, suggesting new features, or contributing to the code, all input is welcome. Check out the [GitHub repository](https://github.com/mgd1984/tts-obsidian-plugin) for more information on how to get involved, including submitting issues & PRs.
 
 ## Changelog
 
