@@ -1,83 +1,45 @@
-# Speech-to-text in Obsidian using OpenAI Whisper 🗣️📝
+# Speech Synthesizer for Obsidian
 
-Obsidian Whisper is a plugin that effortlessly turns your speech into written notes. Just speak your mind, and let [Whisper](https://openai.com/research/whisper) from OpenAI do the rest!
+This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging the power of OpenAI's Whisper API to provide high-quality speech synthesis directly within your notes. Whether you're looking to enhance your productivity or make your notes more accessible, this plugin offers a seamless integration with Obsidian.
 
-## 🚀 Getting Started
+## Features
 
-1. This plugin can be installed from "Community Plugins" inside Obsidian.
-2. For this plugin to work, you will need to provide your OpenAI API key. See the Settings section of this README file for more information.
+- **Whisper API Integration**: Utilize the advanced transcription capabilities of OpenAI's Whisper API for high-quality text-to-speech.
+- **Customizable Settings**: Tailor the plugin's behavior to your needs with customizable settings, including API key, API URL, model selection, and language preference.
+- **Audio Recording & Saving**: Record and optionally save audio files directly within Obsidian, making it easy to reference and organize your recordings.
+- **Transcription Saving**: Choose to save transcriptions as new files or insert them at your cursor, with customizable paths for easy organization.
 
-## 🎯 How to Use
+## Getting Started
 
-### Access Recording Controls
+1. **Install the Plugin**: Search for "Speech Synthesizer" in Obsidian's community plugins browser and install it.
+2. **Configure API Key**: Obtain an OpenAI API key [here](https://platform.openai.com/overview) and input it in the plugin's settings to activate the Whisper API's capabilities.
+3. **Customize Settings**: Adjust the plugin settings to fit your workflow, including the API URL, model, language, and saving preferences.
 
-Click on the ribbon button to open the recording controls interface.
+## Settings
 
-### Record Audio
+- **API Key**: Your OpenAI API key. Required for accessing the Whisper API.
+- **API URL**: The endpoint for Whisper API requests. Default is set for optimal performance.
+- **Model**: Select the machine learning model for text transcription. Default is recommended for most users.
+- **Language**: Set the language for the speech synthesis. For available languages, see [this list](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py).
+- **Save Recording**: Toggle to save audio recordings. Specify the save path in your vault.
+- **Recordings Folder**: Path in the vault for saving audio files. Available when "Save Recording" is enabled.
+- **Save Transcription**: Toggle to save transcriptions as new files or insert at the cursor.
+- **Transcriptions Folder**: Path in the vault for saving transcription files. Available when "Save Transcription" is enabled.
 
-Use the "Start" button to begin recording. You can pause and resume the recording using the "Pause/Resume" button. Click the "Stop" button once you're done. After stopping the recording, the plugin will automatically transcribe the audio and create a new note with the transcribed content and linked audio file in the specified folder.
+## Contributing
 
-> You can quickly start or stop recording using the `Alt + Q` shortcut.
+We welcome contributions to the Speech Synthesizer plugin! Whether it's through submitting bug reports, suggesting new features, or contributing to the code, your input is valuable. Check out the [GitHub repository](https://github.com/mgd1984/tts-obsidian-plugin) for more information on how to get involved.
 
-### Upload Existing Audio File
+## Changelog
 
-You can also transcribe an existing audio file:
+For a detailed list of changes in each version, please refer to the [CHANGELOG.md](CHANGELOG.md) file.
 
--   Open the command palette with `Ctrl/Cmd + P`.
--   Search for "Upload Audio File" and select it.
--   A file dialog will appear. Choose the audio file you want to transcribe.
--   The plugin will transcribe the selected file and create a new note with the content and linked audio file in the specified folder.
+## License
 
-### Command Palette for Quick Actions
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-Both "Start/Stop recording" and "Upload Audio File" actions can also be accessed quickly through the command palette.
+## Acknowledgments
 
-> For further explanation of using this plugin, check out the article ["Speech-to-text in Obsidian using OpenAI Whisper Service"](https://tfthacker.medium.com/speech-to-text-in-obsidian-using-openai-whisper-service-7b2843bf8d64) by [TfT Hacker](https://twitter.com/tfthacker)
+- **Special Thanks**: Nik Danilov for the original Whisper plugin, which inspired this Speech Synthesizer plugin.
 
-## ⚙️ Settings
-
--   API Key: Input your OpenAI API key to unlock the advanced transcription capabilities of the Whisper API. You can obtain a key from OpenAI at this [link](https://platform.openai.com/overview). If you are not familiar with the concept of an API key, you can learn more about this at this [link](https://tfthacker.medium.com/how-to-get-your-own-api-key-for-using-openai-chatgpt-in-obsidian-41b7dd71f8d3).
-
--   API URL: Specify the endpoint that will be used to make requests to the Whisper API. This should not be changed unless you have a specific reason to use a different endpoint.
-
--   Model: Choose the machine learning model to use for generating text transcriptions. This should not be changed unless you have a specific reason to use a different model.
-
--   Language: Specify the language of the message being whispered. For a list of languages and codes, consult this [link](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py).
-
--   Save recording: Toggle this option to save the audio file after sending it to the Whisper API. When enabled, you can specify the path in the vault where the audio files should be saved.
-
--   Recordings folder: Specify the path in the vault where to save the audio files. Example: `folder/audio`. This option is only available if "Save recording" is enabled.
-
--   Save transcription: Toggle this option to create a new file for each recording, or leave it off to add transcriptions at your cursor. When enabled, you can specify the path in the vault where the transcriptions should be saved.
-
--   Transcriptions folder: Specify the path in the vault where to save the transcription files. Example: `folder/note`. This option is only available if "Save transcription" is enabled.
-
-## 🤝 Contributing
-
-We welcome and appreciate contributions, issue reports, and feature requests from the community! Feel free to visit the [Issues](https://github.com/nikdanilov/whisper-obsidian-plugin/issues) page to share your thoughts and suggestions.
-
-## 💬 Whisper API
-
--   For additional information, including limitations and pricing related to using the Whisper API, check out the [OpenAI Whisper FAQ](https://help.openai.com/en/articles/7031512-whisper-api-faq)
--   For a high-level overview of the Whisper API, check out this information from [OpenAI](https://openai.com/research/whisper)
-
-## ⚒️ Manual Installation
-
-If you want to install this plugin manually, use the following steps:
-
-1. Download `manifest.json`, `main.js`, `styles.css` from the [GitHub repository](https://github.com/nikdanilov/whisper-obsidian-plugin/releases) into the `plugins/whisper` folder within your Obsidian vault.
-2. Click on `Reload plugins` button inside `Settings > Community plugins`.
-3. Locate the "Whisper" plugin and enable it.
-4. In the plugin settings include your OpenAI API key.
-
-## 🤩 Say Thank You
-
-Are you finding value in this plugin? Great! You can fuel my coding sessions and share your appreciation by buying me a coffee [here](https://ko-fi.com/nikdanilov).
-
-Help others discover the magic of the Obsidian Whisper Plugin! I'd be thrilled if you could share your experiences on Twitter, Reddit, or your preferred social media platform!
-
-You can find me on Twitter [@nikdanilov\_](https://twitter.com/nikdanilov_).
-
-[<img style="float:left" src="https://user-images.githubusercontent.com/14358394/115450238-f39e8100-a21b-11eb-89d0-fa4b82cdbce8.png" width="200">](https://ko-fi.com/nikdanilov)
-
----
+Enjoy enhancing your Obsidian experience with the Speech Synthesizer plugin!
