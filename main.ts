@@ -1,107 +1,113 @@
-import { Plugin } from "obsidian";
-import { Timer } from "src/Timer";
-import { Controls } from "src/Controls";
-import { AudioHandler } from "src/AudioHandler";
-import { WhisperSettingsTab } from "src/WhisperSettingsTab";
-import { SettingsManager, WhisperSettings } from "src/SettingsManager";
-import { NativeAudioRecorder } from "src/AudioRecorder";
-import { RecordingStatus, StatusBar } from "src/StatusBar";
-export default class Whisper extends Plugin {
-	settings: WhisperSettings;
-	settingsManager: SettingsManager;
-	timer: Timer;
-	recorder: NativeAudioRecorder;
-	audioHandler: AudioHandler;
-	controls: Controls | null = null;
-	statusBar: StatusBar;
+import { App, Plugin, Editor, Notice } from 'obsidian';
+import { SettingsManager, SpeechSynthSettings } from './src/SettingsManager';
+import { SpeechSynthSettingsTab } from './src/SpeechSynthSettingsTab';
 
-	async onload() {
-		this.settingsManager = new SettingsManager(this);
-		this.settings = await this.settingsManager.loadSettings();
+export default class SpeechSynth extends Plugin {
+    settingsManager: SettingsManager;
+    settings: SpeechSynthSettings;
+	
+    async onload() {
+        console.log('Loading SpeechSynth plugin');
 
-		this.addRibbonIcon("activity", "Open recording controls", (evt) => {
-			if (!this.controls) {
-				this.controls = new Controls(this);
-			}
-			this.controls.open();
-		});
+        this.settingsManager = new SettingsManager(this);
+        this.settings = await this.settingsManager.loadSettings();
 
-		this.addSettingTab(new WhisperSettingsTab(this.app, this));
+        this.addSettingTab(new SpeechSynthSettingsTab(this.app, this));
 
-		this.timer = new Timer();
-		this.audioHandler = new AudioHandler(this);
-		this.recorder = new NativeAudioRecorder();
+        this.addCommand({
+            id: 'read-selection',
+            name: 'Read Selected Text',
+            editorCallback: (editor: Editor) => this.readSelection(editor)
+        });
+    }
 
-		this.statusBar = new StatusBar(this);
+    onunload() {
+        console.log('Unloading SpeechSynth plugin');
+    }
 
-		this.addCommands();
-	}
+    async readSelection(editor: Editor) {
+        const selectedText = editor.getSelection();
+        if (!selectedText) {
+            new Notice('No text selected');
+            return;
+        }
 
-	onunload() {
-		if (this.controls) {
-			this.controls.close();
-		}
+        try {
+            await this.synthesizeSpeech(selectedText);
+        } catch (error) {
+            console.error('Error synthesizing speech:', error);
+            new Notice(`Error synthesizing speech: ${error.message}`);
+        }
+    }
 
-		this.statusBar.remove();
-	}
+    private async synthesizeSpeech(text: string): Promise<void> {
+        if (this.settings.debugMode) {
+            console.log('Synthesizing speech:', text);
+            console.log('Using settings:', JSON.stringify(this.settings, null, 2));
+        }
 
-	addCommands() {
-		this.addCommand({
-			id: "start-stop-recording",
-			name: "Start/stop recording",
-			callback: async () => {
-				if (this.statusBar.status !== RecordingStatus.Recording) {
-					this.statusBar.updateStatus(RecordingStatus.Recording);
-					await this.recorder.startRecording();
-				} else {
-					this.statusBar.updateStatus(RecordingStatus.Processing);
-					const audioBlob = await this.recorder.stopRecording();
-					const extension = this.recorder
-						.getMimeType()
-						?.split("/")[1];
-					const fileName = `${new Date()
-						.toISOString()
-						.replace(/[:.]/g, "-")}.${extension}`;
-					// Use audioBlob to send or save the recorded audio as needed
-					await this.audioHandler.sendAudioData(audioBlob, fileName);
-					this.statusBar.updateStatus(RecordingStatus.Idle);
-				}
-			},
-			hotkeys: [
-				{
-					modifiers: ["Alt"],
-					key: "Q",
-				},
-			],
-		});
+        try {
+            const response = await fetch('https://api.openai.com/v1/audio/speech', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.settings.apiKey}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    model: this.settings.model,
+                    input: text,
+                    voice: this.settings.voice,
+                }),
+            });
 
-		this.addCommand({
-			id: "upload-audio-file",
-			name: "Upload audio file",
-			callback: () => {
-				// Create an input element for file selection
-				const fileInput = document.createElement("input");
-				fileInput.type = "file";
-				fileInput.accept = "audio/*"; // Accept only audio files
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => null);
+                throw new Error(`API request failed: ${response.status} ${response.statusText}${errorData ? ` - ${JSON.stringify(errorData)}` : ''}`);
+            }
 
-				// Handle file selection
-				fileInput.onchange = async (event) => {
-					const files = (event.target as HTMLInputElement).files;
-					if (files && files.length > 0) {
-						const file = files[0];
-						const fileName = file.name;
-						const audioBlob = file.slice(0, file.size, file.type);
-						// Use audioBlob to send or save the uploaded audio as needed
-						await this.audioHandler.sendAudioData(
-							audioBlob,
-							fileName
-						);
-					}
-				};
+            const audioBlob = await response.blob();
 
-				// Programmatically open the file dialog
-				fileInput.click();
-			},
-		});
-	}
+            if (this.settings.saveAudioFile) {
+                await this.saveAudioFile(audioBlob);
+            }
+
+            await this.playAudio(audioBlob);
+
+            if (this.settings.createNewFileAfterRecording) {
+                await this.createNewFile(text);
+            }
+        } catch (error) {
+            console.error('Error in synthesizeSpeech:', error);
+            throw error;
+        }
+    }
+
+    private async saveAudioFile(audioBlob: Blob): Promise<void> {
+        // Implementation depends on how you want to save files in Obsidian
+        console.log('Saving audio file...');
+        // TODO: Implement file saving logic
+    }
+
+    private async playAudio(audioBlob: Blob): Promise<void> {
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        
+        return new Promise((resolve, reject) => {
+            audio.onended = () => {
+                URL.revokeObjectURL(audioUrl);
+                resolve();
+            };
+            audio.onerror = (error) => {
+                URL.revokeObjectURL(audioUrl);
+                reject(error);
+            };
+            audio.play().catch(reject);
+        });
+    }
+
+    private async createNewFile(text: string): Promise<void> {
+        // Implementation depends on how you want to create new files in Obsidian
+        console.log('Creating new file with synthesized text...');
+        // TODO: Implement file creation logic
+    }
 }

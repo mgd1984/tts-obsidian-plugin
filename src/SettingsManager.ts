@@ -1,47 +1,49 @@
 import { Plugin } from "obsidian";
 
-export interface WhisperSettings {
-	apiKey: string;
-	apiUrl: string;
-	model: string;
-	prompt: string;
-	language: string;
-	saveAudioFile: boolean;
-	saveAudioFilePath: string;
-	debugMode: boolean;
-	createNewFileAfterRecording: boolean;
-	createNewFileAfterRecordingPath: string;
+export interface SpeechSynthSettings {
+    apiKey: string;
+    apiUrl: string;
+    model: string;
+    prompt: string;
+    voice: string;
+    language: string;
+    saveAudioFile: boolean;
+    saveAudioFilePath: string;
+    debugMode: boolean;
+    createNewFileAfterRecording: boolean;
+    createNewFileAfterRecordingPath: string;
 }
 
-export const DEFAULT_SETTINGS: WhisperSettings = {
-	apiKey: "",
-	apiUrl: "https://api.openai.com/v1/audio/transcriptions",
-	model: "whisper-1",
-	prompt: "",
-	language: "en",
-	saveAudioFile: true,
-	saveAudioFilePath: "",
-	debugMode: false,
-	createNewFileAfterRecording: true,
-	createNewFileAfterRecordingPath: "",
+export const DEFAULT_SETTINGS: SpeechSynthSettings = {
+    apiKey: "",
+    apiUrl: "https://api.openai.com/v1/audio/speech",
+    model: "tts-1",
+    prompt: "",
+    voice: "alloy",
+    language: "en",
+    saveAudioFile: true,
+    saveAudioFilePath: "",
+    debugMode: false,
+    createNewFileAfterRecording: true,
+    createNewFileAfterRecordingPath: "",
 };
 
 export class SettingsManager {
-	private plugin: Plugin;
+    private plugin: Plugin;
 
-	constructor(plugin: Plugin) {
-		this.plugin = plugin;
-	}
+    constructor(plugin: Plugin) {
+        this.plugin = plugin;
+    }
 
-	async loadSettings(): Promise<WhisperSettings> {
-		return Object.assign(
-			{},
-			DEFAULT_SETTINGS,
-			await this.plugin.loadData()
-		);
-	}
+    async loadSettings(): Promise<SpeechSynthSettings> {
+        return Object.assign(
+            {},
+            DEFAULT_SETTINGS,
+            await this.plugin.loadData()
+        );
+    }
 
-	async saveSettings(settings: WhisperSettings): Promise<void> {
-		await this.plugin.saveData(settings);
-	}
+    async saveSettings(settings: SpeechSynthSettings): Promise<void> {
+        await this.plugin.saveData(settings);
+    }
 }

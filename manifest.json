@@ -1,11 +1,11 @@
 {
-  "id": "whisper",
-  "name": "Whisper",
-  "version": "1.5.5",
+  "id": "Speech Synthesizer",
+  "name": "Speech Synthesizer",
+  "version": "0.1.0",
   "minAppVersion": "0.15.0",
-  "description": "Speech-to-text in Obsidian using OpenAI Whisper",
-  "author": "Nik Danilov",
-  "authorUrl": "https://nikdanilov.com",
-  "fundingUrl": "patreon.com/nikdanilov",
+  "description": "Text-to-speech in Obsidian using OpenAI Whisper",
+  "author": "gener8or",
+  "authorUrl": "",
+  "fundingUrl": "",
   "isDesktopOnly": false
 }
