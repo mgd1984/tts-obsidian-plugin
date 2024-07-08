@@ -23,12 +23,9 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
         this.createApiUrlSetting();
         this.createModelSetting();
         this.createVoiceSetting();
-        this.createPromptSetting();
         this.createLanguageSetting();
         this.createSaveAudioFileToggleSetting();
         this.createSaveAudioFilePathSetting();
-        this.createNewFileToggleSetting();
-        this.createNewFilePathSetting();
         this.createDebugModeToggleSetting();
     }
 
@@ -129,19 +126,6 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
             );
     }
 
-    private createPromptSetting(): void {
-        this.createTextSetting(
-            "Prompt",
-            "Optional: Add words with their correct spellings to help with transcription. Make sure it matches the chosen language.",
-            "Example: ZyntriQix, Digique Plus, CynapseFive",
-            this.plugin.settings.prompt,
-            async (value) => {
-                this.plugin.settings.prompt = value;
-                await this.settingsManager.saveSettings(this.plugin.settings);
-            }
-        );
-    }
-
     private createLanguageSetting(): void {
         this.createTextSetting(
             "Language",
@@ -159,7 +143,7 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
         new Setting(this.containerEl)
             .setName("Save recording")
             .setDesc(
-                "Turn on to save the audio file after sending it to the Whisper API"
+                "Turn on to save the audio file after receiving it from the tts API"
             )
             .addToggle((toggle) =>
                 toggle
@@ -195,51 +179,6 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
                     })
             )
             .setDisabled(!this.plugin.settings.saveAudioFile);
-    }
-
-    private createNewFileToggleSetting(): void {
-        new Setting(this.containerEl)
-            .setName("Save transcription")
-            .setDesc(
-                "Turn on to create a new file for each recording, or leave off to add transcriptions at your cursor"
-            )
-            .addToggle((toggle) => {
-                toggle
-                    .setValue(this.plugin.settings.createNewFileAfterRecording)
-                    .onChange(async (value) => {
-                        this.plugin.settings.createNewFileAfterRecording =
-                            value;
-                        if (!value) {
-                            this.plugin.settings.createNewFileAfterRecordingPath =
-                                "";
-                        }
-                        await this.settingsManager.saveSettings(
-                            this.plugin.settings
-                        );
-                        this.createNewFileInput.setDisabled(!value);
-                    });
-            });
-    }
-
-    private createNewFilePathSetting(): void {
-        this.createNewFileInput = new Setting(this.containerEl)
-            .setName("Transcriptions folder")
-            .setDesc(
-                "Specify the path in the vault where to save the transcription files"
-            )
-            .addText((text) => {
-                text.setPlaceholder("Example: folder/note")
-                    .setValue(
-                        this.plugin.settings.createNewFileAfterRecordingPath
-                    )
-                    .onChange(async (value) => {
-                        this.plugin.settings.createNewFileAfterRecordingPath =
-                            value;
-                        await this.settingsManager.saveSettings(
-                            this.plugin.settings
-                        );
-                    });
-            });
     }
 
     private createDebugModeToggleSetting(): void {

@@ -1,11 +1,10 @@
 {
-  "id": "Speech Synthesizer",
+  "id": "speech-synthesizer",
   "name": "Speech Synthesizer",
   "version": "0.1.0",
   "minAppVersion": "0.15.0",
   "description": "Text-to-speech in Obsidian using OpenAI Whisper",
   "author": "gener8or",
-  "authorUrl": "",
-  "fundingUrl": "",
+  "authorUrl": "https://www.github.com/mgd1984",
   "isDesktopOnly": false
 }

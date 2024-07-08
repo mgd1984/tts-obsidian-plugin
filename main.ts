@@ -85,7 +85,11 @@ export default class SpeechSynth extends Plugin {
 		}
 
 		try {
-			const fileName = `speech_${Date.now()}.mp3`;
+			const currentDate = new Date();
+			const year = currentDate.getFullYear();
+			const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+			const day = currentDate.getDate().toString().padStart(2, '0');
+			const fileName = `speech_${year}${month}${day}.mp3`;
 			const filePath = `${this.settings.saveAudioFilePath}/${fileName}`.replace(/\/+/g, '/');
 
 			const arrayBuffer = await audioBlob.arrayBuffer();
