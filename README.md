@@ -1,10 +1,10 @@
 # Speech Synthesizer for Obsidian
 
-This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging the power of OpenAI's TTS API to provide high-quality speech synthesis directly within your notes. Whether you're looking to enhance your productivity or make your notes more accessible, this plugin offers a seamless integration with Obsidian.
+This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging the power of [OpenAI's TTS API](https://platform.openai.com/docs/api-reference/audio/createSpeech) to provide high-quality speech synthesis directly within your notes. Whether you're looking to enhance your productivity or make your notes more accessible, this plugin offers a seamless integration with Obsidian.
 
 ## Features
 
-- **OpenAI Speech API**: Utilize the advanced audio synthesis capabilities of OpenAI's TTS modes via API for high-quality text-to-speech synthesis.
+- **OpenAI Speech API**: Utilize the advanced audio capabilities of OpenAI's models for high-quality text-to-speech synthesis.
 - **Customizable Settings**: Tailor the plugin's behavior to your needs with customizable settings, including API key, API URL, model selection, and language preference.
 
 ## Getting Started
