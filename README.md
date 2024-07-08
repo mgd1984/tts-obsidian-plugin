@@ -4,10 +4,8 @@ This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging 
 
 ## Features
 
-- **Whisper API Integration**: Utilize the advanced transcription capabilities of OpenAI's Whisper API for high-quality text-to-speech.
+- **OpenAI Speech API**: Utilize the advanced audio synthesis capabilities of OpenAI's TTS modes via API for high-quality text-to-speech synthesis.
 - **Customizable Settings**: Tailor the plugin's behavior to your needs with customizable settings, including API key, API URL, model selection, and language preference.
-- **Audio Recording & Saving**: Record and optionally save audio files directly within Obsidian, making it easy to reference and organize your recordings.
-- **Transcription Saving**: Choose to save transcriptions as new files or insert them at your cursor, with customizable paths for easy organization.
 
 ## Getting Started
 
@@ -20,11 +18,6 @@ This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging 
 - **API Key**: Your OpenAI API key. Required for accessing the Whisper API.
 - **API URL**: The endpoint for Whisper API requests. Default is set for optimal performance.
 - **Model**: Select the machine learning model for text transcription. Default is recommended for most users.
-- **Language**: Set the language for the speech synthesis. For available languages, see [this list](https://github.com/openai/whisper/blob/main/whisper/tokenizer.py).
-- **Save Recording**: Toggle to save audio recordings. Specify the save path in your vault.
-- **Recordings Folder**: Path in the vault for saving audio files. Available when "Save Recording" is enabled.
-- **Save Transcription**: Toggle to save transcriptions as new files or insert at the cursor.
-- **Transcriptions Folder**: Path in the vault for saving transcription files. Available when "Save Transcription" is enabled.
 
 ## Contributing
 
