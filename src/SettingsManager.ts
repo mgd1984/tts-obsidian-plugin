@@ -12,6 +12,14 @@ export interface SpeechSynthSettings {
     debugMode: boolean;
     createNewFileAfterRecording: boolean;
     createNewFileAfterRecordingPath: string;
+	speed: number;
+    pitch: number;
+    volume: number;
+    pronunciationDictionary: { [key: string]: string };
+    batchProcessingEnabled: boolean;
+    experimentalFeaturesEnabled: boolean, // or true, depending on your desired default value
+	AdvancedSettingVisibility: boolean;
+
 }
 
 export const DEFAULT_SETTINGS: SpeechSynthSettings = {
@@ -26,6 +34,14 @@ export const DEFAULT_SETTINGS: SpeechSynthSettings = {
     debugMode: false,
     createNewFileAfterRecording: true,
     createNewFileAfterRecordingPath: "",
+	speed: 1.0,
+    pitch: 1.0,
+    volume: 1.0,
+    pronunciationDictionary: {},
+    batchProcessingEnabled: false,
+    experimentalFeaturesEnabled: false, // or true, depending on your desired default value
+	AdvancedSettingVisibility: false,
+
 };
 
 export class SettingsManager {

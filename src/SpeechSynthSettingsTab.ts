@@ -26,7 +26,8 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
         this.createLanguageSetting();
         this.createSaveAudioFileToggleSetting();
         this.createSaveAudioFilePathSetting();
-        this.createDebugModeToggleSetting();
+		this.createAdvancedSettingsSection();
+
     }
 
     private getUniqueFolders(): TFolder[] {
@@ -198,4 +199,112 @@ export class SpeechSynthSettingsTab extends PluginSettingTab {
                     });
             });
     }
+
+	private createSpeedSetting(): void {
+        new Setting(this.containerEl)
+            .setName("Speech Speed")
+            .setDesc("Adjust the speed of speech (0.5 to 2.0)")
+            .addSlider(slider => slider
+                .setLimits(0.5, 2.0, 0.1)
+                .setValue(this.plugin.settings.speed)
+                .setDynamicTooltip()
+                .onChange(async (value) => {
+                    this.plugin.settings.speed = value;
+                    await this.settingsManager.saveSettings(this.plugin.settings);
+                })
+            );
+    }
+
+    private createPitchSetting(): void {
+        new Setting(this.containerEl)
+            .setName("Speech Pitch")
+            .setDesc("Adjust the pitch of speech (0.5 to 2.0)")
+            .addSlider(slider => slider
+                .setLimits(0.5, 2.0, 0.1)
+                .setValue(this.plugin.settings.pitch)
+                .setDynamicTooltip()
+                .onChange(async (value) => {
+                    this.plugin.settings.pitch = value;
+                    await this.settingsManager.saveSettings(this.plugin.settings);
+                })
+            );
+    }
+
+    private createVolumeSetting(): void {
+        new Setting(this.containerEl)
+            .setName("Speech Volume")
+            .setDesc("Adjust the volume of speech (0.0 to 1.0)")
+            .addSlider(slider => slider
+                .setLimits(0, 1, 0.1)
+                .setValue(this.plugin.settings.volume)
+                .setDynamicTooltip()
+                .onChange(async (value) => {
+                    this.plugin.settings.volume = value;
+                    await this.settingsManager.saveSettings(this.plugin.settings);
+                })
+            );
+    }
+
+    private createPronunciationDictionarySetting(): void {
+        new Setting(this.containerEl)
+            .setName("Pronunciation Dictionary")
+            .setDesc("Add custom pronunciations (format: word=pronunciation, one per line)")
+            .addTextArea(text => text
+                .setPlaceholder("example=egzampul\nObsidian=ob-sid-ee-an")
+                .setValue(Object.entries(this.plugin.settings.pronunciationDictionary).map(([key, value]) => `${key}=${value}`).join('\n'))
+                .onChange(async (value) => {
+                    const dictionary: { [key: string]: string } = {};
+                    value.split('\n').forEach(line => {
+                        const [word, pronunciation] = line.split('=');
+                        if (word && pronunciation) {
+                            dictionary[word.trim()] = pronunciation.trim();
+                        }
+                    });
+                    this.plugin.settings.pronunciationDictionary = dictionary;
+                    await this.settingsManager.saveSettings(this.plugin.settings);
+                })
+            );
+    }
+
+    private createBatchProcessingToggle(): void {
+        new Setting(this.containerEl)
+            .setName("Enable Batch Processing")
+            .setDesc("Allow converting multiple notes or entire folders to audio files")
+            .addToggle(toggle => toggle
+                .setValue(this.plugin.settings.batchProcessingEnabled)
+                .onChange(async (value) => {
+                    this.plugin.settings.batchProcessingEnabled = value;
+                    await this.settingsManager.saveSettings(this.plugin.settings);
+                })
+            );
+    }
+
+	private createAdvancedSettingsSection(): void {
+		// Create a header for the Advanced Settings
+		this.containerEl.createEl('h3', { text: 'Advanced Settings' });
+	
+		// Example of adding an advanced setting
+		this.createAdvancedToggleSetting();
+		this.createDebugModeToggleSetting();
+		this.createSpeedSetting();
+        this.createPitchSetting();
+        this.createVolumeSetting();
+        this.createPronunciationDictionarySetting();
+        this.createBatchProcessingToggle();
+	}
+	
+	private createAdvancedToggleSetting(): void {
+		new Setting(this.containerEl)
+			.setName("Enable Experimental Features")
+			.setDesc("Turn this on to enable experimental features")
+			.addToggle(toggle => toggle
+				.setValue(this.plugin.settings.experimentalFeaturesEnabled)
+				.onChange(async (value) => {
+					this.plugin.settings.experimentalFeaturesEnabled = value;
+					await this.settingsManager.saveSettings(this.plugin.settings);
+				})
+			);
+	}
+	
+
 }
