@@ -1,11 +1,11 @@
-import { App, Plugin, Editor, Notice } from 'obsidian';
+import { App, Plugin, Editor, Notice, TFile } from 'obsidian';
 import { SettingsManager, SpeechSynthSettings } from './src/SettingsManager';
 import { SpeechSynthSettingsTab } from './src/SpeechSynthSettingsTab';
 
 export default class SpeechSynth extends Plugin {
     settingsManager: SettingsManager;
     settings: SpeechSynthSettings;
-	
+
     async onload() {
         console.log('Loading SpeechSynth plugin');
 
@@ -47,7 +47,7 @@ export default class SpeechSynth extends Plugin {
         }
 
         try {
-            const response = await fetch('https://api.openai.com/v1/audio/speech', {
+            const response = await fetch(this.settings.apiUrl, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${this.settings.apiKey}`,
@@ -73,20 +73,35 @@ export default class SpeechSynth extends Plugin {
 
             await this.playAudio(audioBlob);
 
-            if (this.settings.createNewFileAfterRecording) {
-                await this.createNewFile(text);
-            }
         } catch (error) {
             console.error('Error in synthesizeSpeech:', error);
             throw error;
         }
     }
 
-    private async saveAudioFile(audioBlob: Blob): Promise<void> {
-        // Implementation depends on how you want to save files in Obsidian
-        console.log('Saving audio file...');
-        // TODO: Implement file saving logic
-    }
+	private async saveAudioFile(audioBlob: Blob): Promise<void> {
+		if (this.settings.debugMode) {
+			console.log('Attempting to save audio file');
+		}
+
+		try {
+			const fileName = `speech_${Date.now()}.mp3`;
+			const filePath = `${this.settings.saveAudioFilePath}/${fileName}`.replace(/\/+/g, '/');
+
+			const arrayBuffer = await audioBlob.arrayBuffer();
+			const uint8Array = new Uint8Array(arrayBuffer);
+
+			await this.app.vault.createBinary(filePath, uint8Array);
+
+			if (this.settings.debugMode) {
+				console.log(`Audio file saved successfully: ${filePath}`);
+			}
+			new Notice(`Audio file saved: ${filePath}`);
+		} catch (error) {
+			console.error('Error saving audio file:', error);
+			new Notice(`Failed to save audio file: ${error.message}`);
+		}
+	}
 
     private async playAudio(audioBlob: Blob): Promise<void> {
         const audioUrl = URL.createObjectURL(audioBlob);
@@ -103,11 +118,5 @@ export default class SpeechSynth extends Plugin {
             };
             audio.play().catch(reject);
         });
-    }
-
-    private async createNewFile(text: string): Promise<void> {
-        // Implementation depends on how you want to create new files in Obsidian
-        console.log('Creating new file with synthesized text...');
-        // TODO: Implement file creation logic
     }
 }
