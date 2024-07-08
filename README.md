@@ -34,5 +34,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Acknowledgments
 
 - **Special Thanks**: Nik Danilov for the original Whisper plugin, which inspired this Speech Synthesizer plugin.
-
-Enjoy enhancing your Obsidian experience with the Speech Synthesizer plugin!
