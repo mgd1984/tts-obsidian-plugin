@@ -11,7 +11,7 @@ This plugin brings advanced text-to-speech capabilities to Obsidian, leveraging 
 
 1. **Install the Plugin**: Search for "Speech Synthesizer" in Obsidian's community plugins browser and install it.
 2. **Configure API Key**: Obtain an OpenAI API key [here](https://platform.openai.com/overview) and input it in the plugin's settings to activate the plugin's capabilities.
-3. **Customize Settings**: Adjust the speech synthesizer settings to fit your workflow, including the API URL, model, language, and saving preferences.
+3. **Speech Tuning**: Shape the tone of your voice synthesizer to fit your workflow, including 6 voices, speed, and volume settings (more to come).
 
 ## Settings
 
